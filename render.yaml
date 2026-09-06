@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: funda-ai-backend
+    runtime: node
+    region: frankfurt
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: RATE_LIMIT_MAX
+        value: "60"
+      - key: NODE_ENV
+        value: production
