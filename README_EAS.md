@@ -1,42 +1,14 @@
-This repository now includes EAS build configuration and an Expo app config override to produce Android builds (APK for preview and AAB for Play Store).
+Added static app.json manifest so Expo Launch can modify app manifest settings. This file provides a static app manifest required by the Expo Launch flow. It includes basic metadata: name, slug, version, sdkVersion, platforms and minimal android configuration.
 
-Files added
-- eas.json — EAS build profiles (preview -> APK, production -> AAB)
-- app.config.js — Loads existing app.json and overrides android.package and expo.extra.apiUrl.
+Why this change
+- Expo Launch (Launch from GitHub) requires a static app manifest (app.json) to be present so it can modify manifest settings during the launch process. Your project previously only had a dynamic manifest (app.config.js), which prevented Launch from proceeding.
 
-Before you build
-1. Replace the placeholder backend URL
-   - Option A (recommended for production builds): Set a build secret in EAS and provide it at build time.
-     - eas secret:create --name API_URL --value "https://your-backend.example.com"
-     - Then build with: eas build -p android --profile production
-   - Option B (quick, for testing): Edit app.json or app.config.js and replace 'https://REPLACE_WITH_BACKEND_URL' with your backend URL.
+Next steps for you
+1. In the Expo Launch UI (https://expo.dev/launch or your project Launch page), re-enter your GitHub repo URL and try Launch again. The Launch flow should now accept the project and proceed.
+2. Alternatively, run EAS locally to produce a preview APK and then a production AAB (commands in README_EAS.md):
+   - npm install -g eas-cli
+   - eas login
+   - eas build -p android --profile preview
+   - eas build -p android --profile production
 
-Build commands (local)
-1. Install EAS CLI (if not installed):
-   npm install -g eas-cli
-
-2. Login to Expo/EAS:
-   eas login
-
-3. (Optional) Configure your project:
-   eas build:configure
-
-4. Preview APK (fast, for testing on a device):
-   eas build -p android --profile preview
-
-5. Production AAB (for Play Store upload):
-   eas build -p android --profile production
-
-Notes on signing and credentials
-- When prompted, allow EAS to manage Android credentials (keystore) automatically — it's the easiest option.
-- You can also provide your own keystore if you already have one.
-
-Downloading the artifact
-- After the build completes, the CLI prints a URL to download the artifact (APK/AAB). You can also view the build on your Expo account dashboard.
-
-Publishing to Google Play
-- To publish to Google Play, create a Google Play Console account (one-time fee) and set up an app using the package id: com.funda.ai
-- Once ready, upload the produced .aab to the Play Console (internal testing track first).
-- Optionally use `eas submit -p android` to submit directly (requires a Play Console service account JSON file).
-
-If you want me to run the build or attach a sample backend URL, tell me the backend URL (or allow me to add it as an EAS secret) and I will provide the exact commands to run and can continue helping until you have a downloadable APK/AAB.
+If the Launch flow still fails or if a build fails, paste the Launch error or the failed build logs here and I will diagnose and fix the issue.
