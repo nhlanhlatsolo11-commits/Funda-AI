@@ -4,11 +4,15 @@
     "slug": "funda-ai",
     "version": "1.1.0",
     "sdkVersion": "51.0.0",
+    "projectId": "c8e417e3-6cb3-48c6-baa4-db623744ec45",
     "platforms": ["android", "ios", "web"],
     "android": {
       "package": "com.funda.ai",
       "versionCode": 1
     },
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "extra": {
+      "apiUrl": "https://funda-backend.onrender.com"
+    }
   }
 }
